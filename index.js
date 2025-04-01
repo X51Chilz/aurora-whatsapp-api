@@ -1,8 +1,7 @@
-app.use('/public', express.static('public'));
-
 require('dotenv').config();
 const express = require('express');
 const app = express();
+app.use('/public', express.static('public'));
 const whatsappRoutes = require('./routes/whatsapp');
 const { initializeWhatsApp } = require('./services/whatsappClient');
 
