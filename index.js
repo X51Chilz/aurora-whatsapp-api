@@ -9,8 +9,11 @@ app.use('/api', whatsappRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-initializeWhatsApp();
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+app.listen(PORT, async () => {
+  console.log(`🚀 Aurora WhatsApp API is live and listening on port ${PORT}`);
+  try {
+    await initializeWhatsApp();
+  } catch (err) {
+    console.error("❌ Failed to initialize WhatsApp client:", err);
+  }
 });
