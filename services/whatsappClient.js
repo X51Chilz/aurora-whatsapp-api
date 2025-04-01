@@ -1,6 +1,8 @@
 // services/whatsappClient.js
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const fs = require('fs');
+const path = require('path');
 
 let client;
 
@@ -20,21 +22,21 @@ const initializeWhatsApp = () => {
         "--disable-gpu"
       ]
     }
-    
   });
 
   client.on('qr', (qr) => {
     console.log('📱 Scan this QR code to connect WhatsApp:');
-    const fs = require('fs');
-const path = require('path');
-const qrImagePath = path.join(__dirname, '..', 'public', 'qr.png');
 
-qrcode.toFile(qrImagePath, qr, { type: 'png' }, (err) => {
-  if (err) console.error('❌ Failed to save QR image:', err);
-  else console.log('📷 QR code saved to /public/qr.png');
-});
+    const publicDir = path.join(__dirname, '..', 'public');
+    if (!fs.existsSync(publicDir)) {
+      fs.mkdirSync(publicDir);
+    }
 
-
+    const qrImagePath = path.join(publicDir, 'qr.png');
+    require('qrcode').toFile(qrImagePath, qr, { type: 'png' }, (err) => {
+      if (err) console.error('❌ Failed to save QR image:', err);
+      else console.log('📷 QR code saved to /public/qr.png');
+    });
   });
 
   client.on('ready', () => {
