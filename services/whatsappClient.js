@@ -25,7 +25,15 @@ const initializeWhatsApp = () => {
 
   client.on('qr', (qr) => {
     console.log('📱 Scan this QR code to connect WhatsApp:');
-    qrcode.generate(qr, { small: true });
+    const fs = require('fs');
+    const path = require('path');
+    const qrImagePath = path.join(__dirname, '..', 'public', 'qr.png');
+
+    qrcode.toFile(qrImagePath, qr, { type: 'png' }, (err) => {
+  if (err) console.error('❌ Failed to save QR image:', err);
+  else console.log('📷 QR code saved to /public/qr.png');
+});
+
   });
 
   client.on('ready', () => {
